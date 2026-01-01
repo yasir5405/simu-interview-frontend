@@ -1,3 +1,5 @@
 import Home from "./Home";
 import Signup from "./Signup";
-export { Home, Signup };
+import Login from "./Login";
+
+export { Home, Signup, Login };

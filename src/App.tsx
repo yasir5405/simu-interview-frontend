@@ -1,11 +1,12 @@
 import { Route, Routes } from "react-router-dom";
-import { Home, Signup } from "./pages";
+import { Home, Login, Signup } from "./pages";
 
 function App() {
   return (
     <div className="w-full min-h-dvh">
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
       </Routes>
     </div>
