@@ -8,7 +8,7 @@ import {
   FieldSeparator,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { login, type LoginPayload } from "@/api/auth.api";
@@ -16,15 +16,19 @@ import { toast } from "sonner";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "./ui/input-group";
 import { Eye, EyeClosed } from "lucide-react";
 import { Spinner } from "./ui/spinner";
+import { useAuth } from "@/context/AuthContext";
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"form">) {
+  const location = useLocation();
   const navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+
+  const { refreshUser } = useAuth();
 
   const {
     register: registerFn,
@@ -32,6 +36,8 @@ export function LoginForm({
     setError,
     formState: { errors },
   } = useForm<LoginPayload>();
+
+  const from = location.state?.from?.pathname || "/";
 
   const handleLogin: SubmitHandler<LoginPayload> = async (
     data: LoginPayload
@@ -64,8 +70,9 @@ export function LoginForm({
         return;
       }
       localStorage.setItem("token", res.token);
+      await refreshUser();
       toast.success(res.message);
-      navigate("/");
+      navigate(from);
       console.log(res.message);
     } catch (error) {
       setError("root", {

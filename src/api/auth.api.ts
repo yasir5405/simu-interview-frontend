@@ -28,6 +28,11 @@ export interface LoginSuccessResponse {
 export interface RegisterSuccessResponse {
   success: true;
   message: string;
+}
+
+export interface MeSuccessResponse {
+  success: true;
+  message: string;
   user: {
     id: number;
     email: string;
@@ -41,6 +46,7 @@ export interface RegisterSuccessResponse {
 
 export type LoginResponse = LoginSuccessResponse | ErrorResponse;
 export type RegisterResponse = RegisterSuccessResponse | ErrorResponse;
+export type MeResponse = MeSuccessResponse | ErrorResponse;
 
 export const login = async (payload: LoginPayload): Promise<LoginResponse> => {
   try {
@@ -74,7 +80,17 @@ export const register = async (
   }
 };
 
-export const getMe = async () => {
-  const response = await api.get("/auth/me");
-  return response.data;
+export const getMe = async (): Promise<MeResponse> => {
+  try {
+    const response = await api.get("/auth/me");
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError<ErrorResponse>(error)) {
+      return error.response!.data;
+    }
+    return {
+      success: false,
+      message: "Something went wrong",
+    };
+  }
 };
