@@ -3,11 +3,15 @@ import SortFilter from "../Filters/SortFilter";
 import DifficultyFilter from "../Filters/DifficultyFilter";
 import { Button } from "../ui/button";
 import QuestionSearch from "../Search/QuestionSearch";
+import { useNavigate } from "react-router-dom";
 
 const HomeHeader = () => {
   const { user } = useAuth();
+  const navigate = useNavigate();
 
-  const clearFilters = () => {};
+  const clearFilters = () => {
+    navigate(".", { replace: true });
+  };
   return (
     <div className="w-full">
       {/* Top Div */}
