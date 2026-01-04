@@ -7,7 +7,7 @@ const QuestionCategoryTabs = () => {
 
   const [searchParams] = useSearchParams();
 
-  const active = searchParams.get("type") ?? "mcq";
+  const active = searchParams.get("type") ?? "all";
 
   const badgeList = [
     // { label: "All", value: "all" },
@@ -15,6 +15,7 @@ const QuestionCategoryTabs = () => {
     // { label: "Frontend", value: "frontend" },
     // { label: "Backend", value: "backend" },
     // { label: "Fullstack", value: "fullstack" },
+    { label: "All", value: "all" },
     { label: "MCQ", value: "mcq" },
     { label: "TEXT", value: "text" },
   ];
@@ -22,7 +23,7 @@ const QuestionCategoryTabs = () => {
   const handleFilter = (filter: string) => {
     let newurl = "";
 
-    if (filter === "mcq" || filter === active) {
+    if (filter === "all") {
       newurl = removeKeysFromQuery({
         params: searchParams.toString(),
         keysToRemove: ["type"],

@@ -12,6 +12,7 @@ export interface QuestionsSuccessResponse {
     createdAt: Date;
     id: number;
     topicId: number;
+    totalAttempts: number;
   }[];
 }
 

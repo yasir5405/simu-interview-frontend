@@ -1,6 +1,10 @@
-import { fetchQuestions, type Questions } from "@/api/questions.api";
+import {
+  fetchQuestions,
+  type QuestionsSuccessResponse,
+} from "@/api/questions.api";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import QuestionCard from "./QuestionCard";
 
 const QuestionList = () => {
   const [urlParams] = useSearchParams();
@@ -9,7 +13,9 @@ const QuestionList = () => {
   const type = urlParams.get("type");
   const sort = urlParams.get("sort");
 
-  const [questions, setQuestions] = useState([]);
+  const [questions, setQuestions] = useState<
+    QuestionsSuccessResponse["questions"]
+  >([]);
 
   const [loading, setLoading] = useState(true);
 
@@ -46,14 +52,15 @@ const QuestionList = () => {
   if (questions.length === 0) return <div>No questions found</div>;
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 mt-4">
       {questions.map((q) => (
-        <div key={q.id} className="border p-4 rounded">
-          <p>{q.questionText}</p>
-          <p className="text-sm text-muted-foreground">
-            {q.type.toUpperCase()} · {q.difficulty}
-          </p>
-        </div>
+        <QuestionCard
+          key={q.id}
+          difficulty={q.difficulty}
+          questionText={q.questionText}
+          type={q.type}
+          totalAttempts={q.totalAttempts}
+        />
       ))}
     </div>
   );
